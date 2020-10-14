@@ -19,3 +19,13 @@ Funcionalidades ya implementadas:
 	+ Pedirle al usuario username y password (no muestra la password)
 	+ Abrir instagram desde Firefox
 	+ Inicia sesion con los datos pasados
+
+
+Elementos de HTML
+
+	perfil:
+		+ class icono de perfil: "_2dbep qNELH"
+		+ class perfil: "-qQT3" (boton que abre el perfil)
+		+ href perfil: "/ernedainesi/" 
+	+ class save login info: "sqdOP yWX7d    y3zKF     "
+	+ class turn on notifications: "aOOlW   HoLwm " 
