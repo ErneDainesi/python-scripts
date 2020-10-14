@@ -52,6 +52,8 @@ class User:
 
     def got_to_profile(self):
         self.close_pop_ups()
+        self.wait_for_clickable(By.XPATH, "//span[@class='_2dbep qNELH']")
+        self.wait_for_clickable(By.XPATH, "//a[@class='-qQT3']")
 
     def quit_browser(self):
         self.driver.quit()
@@ -68,4 +70,3 @@ if __name__ == "__main__":
     user = User(username, password)
     user.login()
     user.got_to_profile()
-    # comentario x
