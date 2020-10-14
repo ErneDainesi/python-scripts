@@ -1,0 +1,21 @@
+La idea de este bot es automatizar comentarios en una publicacion de Instagram.
+
+Tengo que poder:
+	+ Logearme con mi cuenta a instagram
+		- Cuando corro el script que me pida user  y pass. (Si puedo esconder la pass mejor)
+		- Podria intentar volver a pedir datos si es que estos son erroneos.
+	+ Manejar mensajes de pop-ups
+	+ Entrar a mi perfil y obtener mi lista de seguidores (o seguidos) o un rango acotado de ellos.
+		- Capaz puedo hacer que busque con los que mas interactuo nada mas
+	+ Entrar a una publicacion especifica
+	+ Poder etiquetar personas de esa lista en dicha publicacion
+
+Implementacion:
+	+ Agregar clases
+		- Clase usuario
+			+ metodos: login
+
+Funcionalidades ya implementadas:
+	+ Pedirle al usuario username y password (no muestra la password)
+	+ Abrir instagram desde Firefox
+	+ Inicia sesion con los datos pasados
