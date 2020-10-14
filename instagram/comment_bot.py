@@ -68,6 +68,3 @@ if __name__ == "__main__":
     user = User(username, password)
     user.login()
     user.got_to_profile()
-
-    #time.sleep(10)
-    #user.quit_browser()
