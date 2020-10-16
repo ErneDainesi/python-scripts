@@ -14,7 +14,7 @@ class User:
         self.username = username
         self.password = password
         self.driver = webdriver.Firefox(PATH)
-        #self.driver.maximize_window()
+        # self.driver.maximize_window()
 
     def wait_for_element(self, tag, value):
         try:
@@ -55,6 +55,17 @@ class User:
         self.wait_for_clickable(By.XPATH, "//span[@class='_2dbep qNELH']")
         self.wait_for_clickable(By.XPATH, "//a[@class='-qQT3']")
 
+    def get_followers(self):
+        self.wait_for_clickable(By.XPATH, "//a[@class='-nal3 ']")
+        self.wait_for_element(By.XPATH, "//div[@class='PZuss']")
+        xpath = "/html/body/div[4]/div/div/div[2]/ul/div/li[{}]/div/div[2]/div[1]/div/div/span/a"
+        followers = []
+        for i in range(30):
+            follower = self.driver.find_elements_by_xpath(xpath.format(i))
+            for user in follower:
+                print(f"{i}) {user.text}")
+                followers.append(user.text)
+
     def quit_browser(self):
         self.driver.quit()
 
@@ -70,3 +81,4 @@ if __name__ == "__main__":
     user = User(username, password)
     user.login()
     user.got_to_profile()
+    user.get_followers()
