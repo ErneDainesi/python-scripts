@@ -57,13 +57,6 @@ class User:
         self.wait_for_clickable(By.XPATH, "//a[@class='-qQT3']")
 
     def get_followers(self):
-<<<<<<< HEAD
-        self.wait_for_clickable(By.XPATH, "//a[@class='-nal3 ']")
-        self.wait_for_element(By.XPATH, "//div[@class='PZuss']")
-        xpath = "/html/body/div[4]/div/div/div[2]/ul/div/li[{}]/div/div[2]/div[1]/div/div/span/a"
-        followers = []
-        for i in range(30):
-=======
         num_f_xpath = "/html/body/div[1]/section/main/div/header/section/ul/li[2]/a/span"
         self.wait_for_element(By.XPATH, num_f_xpath)
         number_of_followers = int(
@@ -74,46 +67,19 @@ class User:
         dialog = self.driver.find_element_by_xpath(
             "/html/body/div[4]/div/div/div[2]")
         followers = []
-        for i in range(1, number_of_followers + 1):
-            self.wait_for_element(By.XPATH, xpath.format(i))
->>>>>>> 01bb868e602109e615e4fe351d53ec56b9417307
+        i = 1
+        while i != number_of_followers:
+            #  self.wait_for_element(By.XPATH, xpath.format(i))
             follower = self.driver.find_elements_by_xpath(xpath.format(i))
             for user in follower:
                 print(f"{i}) {user.text}")
                 followers.append(user.text)
-<<<<<<< HEAD
-=======
-            self.driver.execute_script(
-                "arguments[0].scrollTop = arguments[0].scrollHeight", dialog)
-            time.sleep(0.5)
-
-    def quit_browser(self):
-        self.driver.quit()
-
-
-def get_user_data():
-    username = input("username: ")
-    password = getpass.getpass(prompt="password: ")
-    return username, password
-
-
-if __name__ == "__main__":
-    username, password = get_user_data()
-    user = User(username, password)
-    user.login()
-    user.got_to_profile()
-    user.get_followers()
-        self.wait_for_element(By.CLASS_NAME, "cmbtv")
-        self.wait_for_clickable(
-            By.XPATH, "//button[@class='sqdOP yWX7d    y3zKF     ']")
-        self.wait_for_element(By.CLASS_NAME, "mt3GC")
-        self.wait_for_clickable(By.XPATH, "//button[@class='aOOlW   HoLwm ']")
-
-    def got_to_profile(self):
-        self.close_pop_ups()
-        self.wait_for_clickable(By.XPATH, "//span[@class='_2dbep qNELH']")
-        self.wait_for_clickable(By.XPATH, "//a[@class='-qQT3']")
->>>>>>> 01bb868e602109e615e4fe351d53ec56b9417307
+            if i % 12 == 0:
+                self.driver.execute_script(
+                    "arguments[0].scrollTop = arguments[0].scrollHeight",
+                    dialog)
+                time.sleep(0.5)
+            i += 1
 
     def quit_browser(self):
         self.driver.quit()
