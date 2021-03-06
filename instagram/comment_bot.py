@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 import time
 import getpass
 
@@ -14,75 +15,77 @@ class User:
         self.username = username
         self.password = password
         self.followers = []
-        self.driver = webdriver.Firefox(PATH)
+        self.__driver = webdriver.Firefox(PATH)
         # self.driver.maximize_window()
 
-    def wait_for_element(self, tag, value):
+    def __wait_for_element(self, tag, value):
         try:
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.__driver, 10).until(
                 EC.presence_of_element_located((tag, value)))
         except:
             self.quit_browser()
 
-    def wait_for_clickable(self, tag, value):
+    def __wait_for_clickable(self, tag, value):
         try:
-            WebDriverWait(self.driver,
+            WebDriverWait(self.__driver,
                           10).until(EC.element_to_be_clickable(
                               (tag, value))).click()
         except:
             self.quit_browser()
 
-    def load_instagram(self):
-        self.driver.get("http://instagram.com")  # Opens instagram on firefox
-        self.wait_for_element(By.NAME, "username")
+    def __load_instagram(self):
+        self.__driver.get("http://instagram.com")  # Opens instagram on firefox
+        self.__wait_for_element(By.NAME, "username")
 
     def login(self):
-        self.load_instagram()
-        username_element = self.driver.find_element_by_name('username')
-        password_element = self.driver.find_element_by_name('password')
+        self.__load_instagram()
+        username_element = self.__driver.find_element_by_name('username')
+        password_element = self.__driver.find_element_by_name('password')
         username_element.send_keys(self.username)
         password_element.send_keys(self.password)
         password_element.send_keys(Keys.RETURN)
 
-    def close_pop_ups(self):
-        self.wait_for_element(By.CLASS_NAME, "cmbtv")
-        self.wait_for_clickable(
+    def __close_pop_ups(self):
+        self.__wait_for_element(By.CLASS_NAME, "cmbtv")
+        self.__wait_for_clickable(
             By.XPATH, "//button[@class='sqdOP yWX7d    y3zKF     ']")
-        self.wait_for_element(By.CLASS_NAME, "mt3GC")
-        self.wait_for_clickable(By.XPATH, "//button[@class='aOOlW   HoLwm ']")
+        self.__wait_for_element(By.CLASS_NAME, "mt3GC")
+        self.__wait_for_clickable(By.XPATH,
+                                  "//button[@class='aOOlW   HoLwm ']")
 
     def got_to_profile(self):
-        self.close_pop_ups()
-        self.wait_for_clickable(By.XPATH, "//span[@class='_2dbep qNELH']")
-        self.wait_for_clickable(By.XPATH, "//a[@class='-qQT3']")
+        self.__close_pop_ups()
+        self.__wait_for_clickable(By.XPATH, "//span[@class='_2dbep qNELH']")
+        self.__wait_for_clickable(By.XPATH, "//a[@class='-qQT3']")
 
     def get_followers(self):
         num_f_xpath = "/html/body/div[1]/section/main/div/header/section/ul/li[2]/a/span"
-        self.wait_for_element(By.XPATH, num_f_xpath)
+        self.__wait_for_element(By.XPATH, num_f_xpath)
         number_of_followers = int(
-            self.driver.find_element_by_xpath(num_f_xpath).text)
-        self.wait_for_clickable(By.XPATH, "//a[@class='-nal3 ']")
-        self.wait_for_element(By.XPATH, "//div[@class='PZuss']")
+            self.__driver.find_element_by_xpath(num_f_xpath).text)
+        self.__wait_for_clickable(By.XPATH, "//a[@class='-nal3 ']")
+        self.__wait_for_element(By.XPATH, "//div[@class='PZuss']")
+        dialog = self.__driver.find_element_by_xpath("//div[@class='isgrP']")
+        scrolling_times = (number_of_followers // 6)
         xpath = "/html/body/div[4]/div/div/div[2]/ul/div/li[{}]/div/div[2]/div[1]/div/div/span/a"
-        dialog = self.driver.find_element_by_xpath(
-            "/html/body/div[4]/div/div/div[2]")
-        followers = []
-        i = 1
-        while i != number_of_followers:
-            #  self.wait_for_element(By.XPATH, xpath.format(i))
-            follower = self.driver.find_elements_by_xpath(xpath.format(i))
-            for user in follower:
-                print(f"{i}) {user.text}")
-                followers.append(user.text)
-            if i % 12 == 0:
-                self.driver.execute_script(
-                    "arguments[0].scrollTop = arguments[0].scrollHeight",
+        #  coords = follower.location_once_scrolled_into_view
+        for x in range(1, number_of_followers + 1):
+            try:
+                follower = self.__driver.find_element_by_xpath(xpath.format(x))
+                print(f"{x}. {follower.text}")
+            except:
+                self.__driver.execute_script(
+                    'arguments[0].scrollTop = arguments[0].scrollTop + arguments[0].offsetHeight;',
                     dialog)
-                time.sleep(0.5)
-            i += 1
+                time.sleep(1)
+        #  self.__driver.execute_script("window.scrollTo(0, {})".format(
+        #      coords['y']))
+        #  for x in range(1, number_of_followers + 1):
+        #      follower = self.__driver.find_element_by_xpath(xpath.format(x))
+        #      self.followers.append(follower.text)
 
     def quit_browser(self):
-        self.driver.quit()
+        self.__driver.quit()
 
 
 def get_user_data():
